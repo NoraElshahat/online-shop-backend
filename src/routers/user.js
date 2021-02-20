@@ -11,13 +11,14 @@ router.post('/users/login' ,async (req,res)=>{
         const user = await User.findByCredintials(req.body.email , req.body.password)
         const token = await user.getToken()
         res.send({user , token})
+        console.log(user , token , 'from login post')
     } catch (e) {
         res.status(400).send(e)
     }
 })
 //create user
 router.post('/users',async (req,res)=>{
-    const user = new User(req.body)
+    const user = new User(req.body);
     try{
         await user.save()
         const token = await user.getToken()
@@ -41,7 +42,8 @@ router.post('/users/logout' ,auth ,async(req, res)=>{
 })
 
 //logout all session 
-router.post('/users/logoutAll' ,auth ,async(req, res)=>{
+router.post('/users/logoutAll',auth, async(req, res)=>{
+    console.log('hi logoutAll')
     try {
         req.user.tokens = []
         await req.user.save()

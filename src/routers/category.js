@@ -66,7 +66,7 @@ router.get('/categories/:id',async (req,res)=>{
 router.patch('/categories/:id' , async (req, res)=>{
     const updateKeys = Object.keys(req.body)
     const allowedToUpdat = ['name' , 'details']
-    const isvalidToUpdate = updateKeys.every(update => allowedToUpdat.includes(update) )
+    const isvalidToUpdate = updateKeys.some(update => allowedToUpdat.includes(update) )
     if(!isvalidToUpdate){
         return res.status(400).send({error:'Invalid update key'})
     }
