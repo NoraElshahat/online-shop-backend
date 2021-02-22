@@ -39,7 +39,7 @@ router.get('/tags/:id',async (req,res)=>{
 router.patch('/tags/:id' , async (req, res)=>{
     const updateKeys = Object.keys(req.body)
     const allowedToUpdat = ['name']
-    const isvalidToUpdate = updateKeys.every(update => allowedToUpdat.includes(update) )
+    const isvalidToUpdate = updateKeys.some(update => allowedToUpdat.includes(update) )
     if(!isvalidToUpdate){
         return res.status(400).send({error:'Invalid update key'})
     }

@@ -16,7 +16,7 @@ router.post('/products',async (req , res)=>{
 //find all products
 router.get('/products',async (req,res)=>{
     try {
-        const products = await Product.find({})
+        const products = await Product.find({}).populate('tag').exec()
         res.status(200).send(products)
     } catch (e) {
         res.status(500).send(e)
@@ -45,7 +45,7 @@ router.patch('/products/:id' , async (req, res)=>{
     }
     const id = req.params.id 
     try {
-        const updatedProduct = await Product.findByIdAndUpdate(id , req.body , {new:true , runValidators:true})
+        const updatedProduct = await Product.findByIdAndUpdate(id , req.body , {new:true , runValidators:true}).populate('tag').exec()
         if(!updatedProduct){
             return res.status(404).send()
         }
