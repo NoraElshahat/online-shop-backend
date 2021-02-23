@@ -5,17 +5,19 @@ const Tag = require('../models/tag')
 const productSchema = new mongoose.Schema({
     name:{
         type:String,
-        required:true
+        required:[true,'Name is Required']
     },
     description:{
         type:String,
     },
     price:{
-        type:Number
+        type:Number,
+        required:[true , 'Price is required']
     },
     category:[{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'Category'
+        ref:'Category',
+        required:[true , 'Category required']
     }],
     tag:[{
         type:mongoose.Schema.Types.ObjectId,

@@ -1,13 +1,15 @@
 const mongoose = require('mongoose')
+const validator = require('validator')
+
 const categorSchema = new mongoose.Schema({
     name:{
         type:String,
-        required:true,
+        required:[true , 'Name required'],
         trim:true
     },
     details:{
         type:String,
-        required :true,
+        required :[true , 'Detail Required'],
     },
     categoryImg :{
         type:Buffer

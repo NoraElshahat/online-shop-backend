@@ -10,7 +10,9 @@ router.post('/products',async (req , res)=>{
         await product.save()
         res.status(200).send(product)
     } catch (e) {
-        res.status(400).send(e)
+        const arrError = (e.message).split(",")
+        console.log(arrError)
+        res.status(400).send(arrError)
     }
 })
 //find all products
@@ -51,7 +53,8 @@ router.patch('/products/:id' , async (req, res)=>{
         }
         res.status(200).send(updatedProduct)
     } catch (e) {
-        return res.status(500).send()
+        const arrError = (e.message).split(",")
+        res.status(400).send(arrError)
     }
 })
 //delete one product

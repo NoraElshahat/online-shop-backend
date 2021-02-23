@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Category = require('../models/category')
-
+const { check, validationResult } = require('express-validator');
 const multer = require('multer')
 const upload = multer({
     dest:'./uploads',
@@ -29,14 +29,15 @@ const upload = multer({
 
 
 //create Category
-router.post('/categories',upload.single('categoryImg'),async (req , res )=>{
+router.post('/categories',async (req , res )=>{
     console.log(req.body , 'from back');
     const category = new Category(req.body)
     try {
         await category.save()
         res.status(200).send(category)
     } catch (e) {
-        res.status(400).send(e._message)
+        const arrError =(e.message).split(",")
+        res.status(400).send(arrError)
     }
 })
 //find all categories
@@ -78,7 +79,8 @@ router.patch('/categories/:id' , async (req, res)=>{
         }
         res.status(200).send(updatedCategory)
     } catch (e) {
-        return res.status(500).send()
+        const arrError = (e.message).split(",")
+        res.status(400).send(arrError)
     }
 })
 //delete one category
