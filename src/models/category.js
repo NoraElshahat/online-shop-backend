@@ -12,7 +12,7 @@ const categorSchema = new mongoose.Schema({
         required :[true , 'Detail Required'],
     },
     categoryImg :{
-        type:Buffer
+        type:String
     }
 })
 const Category = mongoose.model('Category',categorSchema)
