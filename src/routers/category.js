@@ -38,7 +38,7 @@ router.post('/categories',upload.single("categoryImg"),async (req , res )=>{
 })
 
 //find all categories
-router.get('/categories',async (req,res)=>{
+router.get('/categories' ,async (req,res)=>{
     try {
         const categories = await Category.find({})
         res.status(200).send(categories)
@@ -47,7 +47,7 @@ router.get('/categories',async (req,res)=>{
     }
 })
 //find one category
-router.get('/categories/:id',async (req,res)=>{
+router.get('/categories/:id', async (req,res)=>{
     // console.log('hello find one');
     const id = req.params.id
     try {

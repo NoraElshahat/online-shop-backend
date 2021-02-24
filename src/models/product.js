@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const Category = require('./category')
 const Tag = require('../models/tag')
 
+
 const productSchema = new mongoose.Schema({
     name:{
         type:String,
@@ -22,7 +23,10 @@ const productSchema = new mongoose.Schema({
     tag:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Tag'
-    }]
+    }] ,
+    productImg :{
+        type:String
+    }
 
 })
 

@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const Tag = require('../models/tag')
+const auth = require('../middleware/auth')
+const isAdmin = require('../middleware/isAdmin')
 
 
 //create Tag
@@ -14,7 +16,7 @@ router.post('/tags',async (req , res)=>{
     }
 })
 //find all tags
-router.get('/tags',async (req,res)=>{
+router.get('/tags',auth,isAdmin,async (req,res)=>{
     try {
         const tags = await Tag.find({})
         res.status(200).send(tags)

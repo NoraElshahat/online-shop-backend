@@ -2,10 +2,34 @@ const express = require('express')
 const auth = require('../middleware/auth')
 const router = express.Router()
 const Product = require('../models/product')
+const isAdmin = require('../middleware/isAdmin')
+const multer = require('multer')
+const storage = multer.diskStorage({
+    destination: function(req , file , cb){
+        cb(null , './public/uploads');
+    },
+    filename: function(req , file , cb){
+        cb(null, Date.now()+file.originalname)
+    }
+});
+const upload = multer({
+    storage:storage,
+    limits:{
+        fileSize:100000000000
+    },
+    fileFilter(req , file , cb){
+        if(!file.originalname.match(/\.(png|jpg|jpeg)$/)){
+            return cb(new Error('You must upload an image'))
+        }
+        cb(undefined , true)
+    }
+})
+
 
 //create Product
-router.post('/products',async (req , res)=>{
+router.post('/products',upload.single('productImg'),async (req , res)=>{
     const product = new Product(req.body)
+    product.productImg = req.file.filename
     try {
         await product.save()
         res.status(200).send(product)

@@ -1,6 +1,7 @@
 const express = require('express')
 const  mongoose  = require('mongoose')
 const auth = require('../middleware/auth')
+const isAdmin = require('../middleware/isAdmin')
 const router = express.Router()
 const User = require('../models/user')
 
@@ -18,6 +19,7 @@ router.post('/users/login' ,async (req,res)=>{
 })
 //create user
 router.post('/users',async (req,res)=>{
+    console.log(req.body , 'from back')
     const user = new User(req.body);
     try{
         await user.save()
@@ -26,6 +28,17 @@ router.post('/users',async (req,res)=>{
     }catch(e){
         const arrError = (e.message).split(",")
         res.status(400).send(arrError)
+    }
+})
+
+//find all users
+router.get('/users', auth, isAdmin,async (req,res)=>{
+    try {
+        const users = await User.find({})
+        res.status(200).send(users)
+    } catch (e) {
+        console.log(e.message)
+        res.status(500).send(e)
     }
 })
 
@@ -44,11 +57,13 @@ router.post('/users/logout' ,auth ,async(req, res)=>{
 
 //logout all session 
 router.post('/users/logoutAll',auth, async(req, res)=>{
+    console.log('hi')
     try {
         req.user.tokens = []
         await req.user.save()
         res.status(200).send()
     } catch (e) {
+        console.log(e.message)
         res.status(500).send(e.message)
     }
 })
@@ -79,7 +94,7 @@ router.patch('/users/:id', async (req,res)=>{
     // to prevent user to update on field that not found
     const updateKeys = Object.keys(req.body)
     const allowedToUpdat = ['name' , 'email' , 'password']
-    const isvalidToUpdate = updateKeys.every(update => allowedToUpdat.includes(update) )
+    const isvalidToUpdate = updateKeys.some(update => allowedToUpdat.includes(update) )
     if(!isvalidToUpdate){
         return res.status(400).send({error:'Invalid update key'})
     }
